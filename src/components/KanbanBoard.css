@@ -1,0 +1,70 @@
+.board {
+    width: 100%;
+    min-height: 100%;
+    padding: 2.5rem;
+    background-color: #FFFFFF;
+}
+
+.board h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #212121;
+}
+
+.board h3 {
+    font-size: 1.4rem;
+    font-weight: 400;
+    letter-spacing: 0.1px;
+    color: #5A5A65;
+}
+
+.board-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    padding: 0.5rem;
+    border-radius: 12px;
+    background-color: #F8F8F8;
+    min-height: 100%;
+}
+
+.category-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    padding: 0.75rem;
+}
+
+.category-container h4 {
+    margin: 0;
+    font-size: 1rem;
+    border-radius: 20px;
+    width: fit-content;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    color: #4d4d4d;
+    height: 1.7rem;
+    padding: 0.25rem 0.75rem 0.25rem 0.75rem;
+    text-align: center;
+    background-color: #F0E7F6;
+}
+
+.new-category-container {
+    margin: 0.75rem;
+    margin-top: 3rem;
+    height: 100%;
+}
+
+.ant-card-body {
+    padding: 1rem !important;
+}
+
+.card {
+    min-width: 284px;
+    max-width: 284px;
+    border-radius: 8px;
+}

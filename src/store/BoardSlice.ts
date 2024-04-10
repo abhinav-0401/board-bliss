@@ -1,9 +1,24 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Category } from "./CategorySlice";
+
+export interface Subtask {
+  id: number;
+  value: string;
+  isDone: boolean;
+}
 
 export interface Task {
+  id: number;
   task: string;
-  isDone: boolean;
+  description?: string;
+  subtasks?: Subtask[];
+}
+
+export interface Category {
+  id: number;
+  title: string;
+  color?: string;
+  // subtitle?: string;
+  tasks?: Task[];
 }
 
 export interface Board {
@@ -13,7 +28,16 @@ export interface Board {
 }
 
 const initialState: Board = {
-  title: "",
+  title: "Personal",
+  subtitle: "A board to keep track of personal tasks.",
+  categories: [
+    {
+      id: 0,
+      title: "Todo",
+      color: "#E1E4E8",
+      tasks: [],
+    } as Category,
+  ],
 };
 
 export const boardSlice = createSlice({
@@ -27,11 +51,18 @@ export const boardSlice = createSlice({
       }
     },
     createCategory: (state, action: PayloadAction<Category>) => {
+      console.log(action.payload);
       state.categories?.push(action.payload);
+      console.log(state.categories);
     },
+    addTaskToCategory: (state, action) => {
+      console.log(action.payload);
+      console.log("tasks: ", state.categories && state.categories[action.payload.categoryId].tasks);
+      state.categories && state.categories[action.payload.categoryId].tasks?.push(action.payload.task);
+    }
   },
 });
 
-export const { createBoard } = boardSlice.actions;
+export const { createBoard, createCategory, addTaskToCategory } = boardSlice.actions;
 
 export default boardSlice.reducer;
