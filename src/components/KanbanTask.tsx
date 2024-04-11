@@ -1,9 +1,9 @@
 import { Button, Card, Checkbox, Input, Menu, MenuProps, Modal, Space } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
-import { Board, Category, Subtask, Task, addSubtaskToTask, deleteSubtask, deleteTask, editTask } from "../store/BoardSlice";
+import { Board, Category, Subtask, Task, addSubtaskToTask, deleteTask, editTask } from "../store/BoardSlice";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../hooks/TypedStore";
 import { MenuInfo } from "rc-menu/lib/interface";
+import KanbanSubtask from "./KanbanSubtask";
 
 export default function KanbanTask(props: any): JSX.Element {
   const task: Task = props.task;
@@ -19,18 +19,14 @@ export default function KanbanTask(props: any): JSX.Element {
 
   useEffect(() => {
     setEditedTask(props.task);
-  }, [props.task])
+    console.log("editedTask", editedTask);
+  }, [props.task]);
 
   const dispatch = useAppDispatch();
 
-  function showModal(): void {
-    setIsModalOpen(true);
-  }
-
-  function handleClose(e: React.MouseEvent): void {
+  function showModal(e: React.MouseEvent): void {
     e.stopPropagation();
-    console.log("handleClose called");
-    setIsModalOpen(false);
+    setIsModalOpen(true);
   }
 
   function handleModalClose(e: React.MouseEvent, setModalOpen: React.Dispatch<React.SetStateAction<boolean>>): void {
@@ -52,17 +48,8 @@ export default function KanbanTask(props: any): JSX.Element {
     setIsModalOpen(false);
   }
 
-  function handleDeleteSubtask(subtaskId: number): void {
-    dispatch(deleteSubtask({
-      categoryId: category.id,
-      taskId: task.id,
-      subtaskId,
-    }));
-  }
-
   const editMenuItems: MenuProps["items"] = [
     {
-      // icon: <EllipsisOutlined />,
       label: "Options",
       key: "editMenu",
       children: [
@@ -80,8 +67,8 @@ export default function KanbanTask(props: any): JSX.Element {
     }
   ];
 
-  function showTaskEdit({ key, keyPath, domEvent }: MenuInfo): void {
-    domEvent.stopPropagation();
+  function showTaskEdit(menuinfo: MenuInfo): void {
+    menuinfo.domEvent.stopPropagation();
     setIsModalOpen(false);
     setIsEditModalOpen(true);
   }
@@ -108,7 +95,6 @@ export default function KanbanTask(props: any): JSX.Element {
   return (
     <Card style={{ padding: "0rem" }} className="card" key={task.id} onClick={showModal}>
       <h3>{task.title}</h3>
-      {/* <Checkbox indeterminate>{task.title}</Checkbox> */}
       <div style={{ display: "flex", flexDirection: "column" }}>
         {task.subtasks?.map((subtask) => {
           return (
@@ -134,8 +120,11 @@ export default function KanbanTask(props: any): JSX.Element {
           <Menu mode="vertical" items={editMenuItems} />
         </header>
         <Space.Compact style={{ height: "4vh" }}>
-          <Input placeholder="Add new task" value={subtaskValue} onChange={event => setSubtaskValue(event.target.value)} />
-          <Button style={{ height: "4vh" }} type="primary" onClick={() => handleAddSubtask(task.id)}>Create</Button>
+          <Input placeholder="Add new task" value={subtaskValue} onClick={e => console.log(e.target)} onChange={event => setSubtaskValue(event.target.value)} />
+          <Button style={{ height: "4vh" }} type="primary" onClick={(e) => {
+            e.stopPropagation();
+            handleAddSubtask(task.id);
+          }}>Create</Button>
         </Space.Compact>
       </Modal>
 
@@ -159,10 +148,7 @@ export default function KanbanTask(props: any): JSX.Element {
         {editedTask.subtasks?.map(subtask => {
           console.log("subtask", subtask);
           return (
-            <div className="edit-subtask" key={subtask.id}>
-              <Input value={subtask.value} />
-              <CloseOutlined onClick={() => handleDeleteSubtask(subtask.id)} />
-            </div>
+            <KanbanSubtask key={subtask.id} subtask={subtask} task={task} category={category} editedTask={editedTask} setEditedTask={setEditedTask} />
           );
         })}
       </Modal>  

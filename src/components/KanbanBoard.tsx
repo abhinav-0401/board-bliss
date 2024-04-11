@@ -1,10 +1,8 @@
-import { Button, Card, Checkbox, ColorPicker, Input, Space } from "antd";
-import { Board, addTaskToCategory, createCategory } from "../store/BoardSlice";
+import { Button, ColorPicker, Input, Space } from "antd";
+import { Board, createCategory } from "../store/BoardSlice";
 import { useState } from "react";
 import { useAppDispatch } from "../hooks/TypedStore";
 import "./KanbanBoard.css";
-import Task from "./KanbanTask";
-import KanbanTask from "./KanbanTask";
 import KanbanCategory from "./KanbanCategory";
 
 export default function KanbanBoard(props: any): JSX.Element {

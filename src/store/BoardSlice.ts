@@ -55,6 +55,22 @@ export const boardSlice = createSlice({
       state.categories?.push(action.payload);
       console.log(state.categories);
     },
+    editCategory: (state, action) => {
+      console.log(action.payload);
+      const category = state.categories && state.categories[action.payload.categoryId];
+      if (category) { 
+        category.title = action.payload.categoryTitle;
+      }
+    },
+    deleteCategory: (state, action) => {
+      console.log(action.payload);
+      state.categories?.splice(action.payload.categoryId, 1);
+      if (state.categories) {
+        for (let i = 0; i < state.categories.length; ++i) {
+          state.categories[i].id = i;
+        }
+      }
+    },
     addTaskToCategory: (state, action) => {
       console.log(action.payload);
       console.log("tasks: ", state.categories && state.categories[action.payload.categoryId].tasks);
@@ -66,7 +82,7 @@ export const boardSlice = createSlice({
       category?.tasks && category.tasks[action.payload.taskId].subtasks?.push(action.payload.subtask);
     },
     editTask: (state, action) => {
-      console.log(action.payload);
+      console.log("inside editTask: ", action.payload);
       const category = state.categories && state.categories[action.payload.categoryId];
       if (category?.tasks && category.tasks[action.payload.taskId]) {
         category.tasks[action.payload.taskId] = action.payload.editedTask;
@@ -101,6 +117,8 @@ export const boardSlice = createSlice({
 export const {
   createBoard,
   createCategory,
+  editCategory,
+  deleteCategory,
   addTaskToCategory,
   addSubtaskToTask,
   editTask,
