@@ -12,7 +12,7 @@ export default function KanbanBoard(props: any): JSX.Element {
 
   const [categoryTitle, setCategoryTitle] = useState<string>("");
   const [categoryColor, setCategoryColor] = useState<string>("#F0E7F6");
-  
+
   const dispatch = useAppDispatch();
 
   function handleCreateCategory() {
@@ -30,7 +30,7 @@ export default function KanbanBoard(props: any): JSX.Element {
       <div className="board-container">
         {board.categories?.map((category) => {
           return (
-            <KanbanCategory board={board} category={category} />
+            <KanbanCategory key={category.id} board={board} category={category} />
           );
         })}
         <div className="new-category-container">

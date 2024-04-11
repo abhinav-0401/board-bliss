@@ -64,10 +64,48 @@ export const boardSlice = createSlice({
       console.log(action.payload);
       const category = state.categories && state.categories[action.payload.categoryId];
       category?.tasks && category.tasks[action.payload.taskId].subtasks?.push(action.payload.subtask);
+    },
+    editTask: (state, action) => {
+      console.log(action.payload);
+      const category = state.categories && state.categories[action.payload.categoryId];
+      if (category?.tasks && category.tasks[action.payload.taskId]) {
+        category.tasks[action.payload.taskId] = action.payload.editedTask;
+      }
+    },
+    deleteTask: (state, action) => {
+      console.log(action.payload);
+      const category = state.categories && state.categories[action.payload.categoryId];
+      category?.tasks?.splice(action.payload.taskId, 1);
+      if (category?.tasks) {
+        // assigning new IDs since the positions have changed and the IDs are reflective of their positions
+        for (let i = 0; i < category.tasks.length; ++i) {
+          category.tasks[i].id = i;
+        }
+      }
+    },
+    deleteSubtask: (state, action) => {
+      console.log(action.payload);
+      const category = state.categories && state.categories[action.payload.categoryId];
+      const task = category?.tasks && category.tasks[action.payload.taskId];
+      task?.subtasks?.splice(action.payload.subtaskId, 1);
+      if (task?.subtasks) {
+        // same ID re-assignment we did in deleteTask
+        for (let i = 0; i < task.subtasks.length; ++i) {
+          task.subtasks[i].id = i; 
+        }
+      }
     }
   },
 });
 
-export const { createBoard, createCategory, addTaskToCategory, addSubtaskToTask } = boardSlice.actions;
+export const {
+  createBoard,
+  createCategory,
+  addTaskToCategory,
+  addSubtaskToTask,
+  editTask,
+  deleteTask,
+  deleteSubtask,
+} = boardSlice.actions;
 
 export default boardSlice.reducer;

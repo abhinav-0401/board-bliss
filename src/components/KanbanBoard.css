@@ -75,3 +75,26 @@
     color: #212121;
     font-weight: 600;
 }
+
+.task-modal header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.task-modal menu {
+    padding: 0px;
+    margin: 0px;
+}
+
+.edit-subtask {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 
+.ant-menu-submenu-arrow {
+    display: none;
+} */

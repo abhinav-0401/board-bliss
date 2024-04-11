@@ -30,7 +30,7 @@ export default function KanbanCategory(props: any): JSX.Element {
       <h4 style={{ backgroundColor: category.color }}>{category.title}</h4>
       {category.tasks?.map((task) => {
         return (
-          <KanbanTask board={board} category={category} task={task} />
+          <KanbanTask key={task.id} board={board} category={category} task={task} />
         );
       })}
 
