@@ -1,9 +1,10 @@
-import { Button, Card, Checkbox, Input, Menu, MenuProps, Modal, Space } from "antd";
-import { Board, Category, Subtask, Task, addSubtaskToTask, deleteTask, editTask } from "../store/BoardSlice";
+import { Button, Card, Checkbox, Dropdown, Input, Menu, MenuProps, Modal, Space } from "antd";
+import { Board, Category, Subtask, Task, addLabelToTask, addSubtaskToTask, deleteTask, editTask } from "../store/BoardSlice";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../hooks/TypedStore";
 import { MenuInfo } from "rc-menu/lib/interface";
 import KanbanSubtask from "./KanbanSubtask";
+import { DownOutlined } from "@ant-design/icons";
 
 export default function KanbanTask(props: any): JSX.Element {
   const task: Task = props.task;
@@ -45,7 +46,8 @@ export default function KanbanTask(props: any): JSX.Element {
         isDone: false,
       } as Subtask,
     }));
-    setIsModalOpen(false);
+    // setIsModalOpen(false);
+    setSubtaskValue("");
   }
 
   const editMenuItems: MenuProps["items"] = [
@@ -92,6 +94,33 @@ export default function KanbanTask(props: any): JSX.Element {
     }));
   }
 
+  const items: MenuProps['items'] = [];
+
+  for (const label of board.labels) {
+    items.push({
+      label: label.value,
+      key: `${label.id}`,
+    });
+  }
+
+  const onClick: MenuProps['onClick'] = ({ key }) => {
+    console.log(`Click on item ${key}`);
+    
+    if (task.labels.length >= 1) {
+      for (let label of task.labels) {
+        if (label.id == Number(key)) { // already been added to this task
+          alert("already added");
+          return;
+        } 
+      }
+    }
+    dispatch(addLabelToTask({
+      categoryId: category.id,
+      taskId: task.id,
+      label: board.labels[Number(key)],
+    }));
+  };
+
   return (
     <Card style={{ padding: "0rem" }} className="card" key={task.id} onClick={showModal}>
       <h3>{task.title}</h3>
@@ -101,6 +130,14 @@ export default function KanbanTask(props: any): JSX.Element {
             <Checkbox key={subtask.id} indeterminate>{subtask.value}</Checkbox>
           );
         })}
+
+        <div>
+          {task.labels.map(label => {
+            return (
+              <div key={label.id}>{label.value}</div>
+            );
+          })}
+        </div>
       </div>
 
       <Modal 
@@ -120,12 +157,23 @@ export default function KanbanTask(props: any): JSX.Element {
           <Menu mode="vertical" items={editMenuItems} />
         </header>
         <Space.Compact style={{ height: "4vh" }}>
-          <Input placeholder="Add new task" value={subtaskValue} onClick={e => console.log(e.target)} onChange={event => setSubtaskValue(event.target.value)} />
+          <Input placeholder="Add new subtask" value={subtaskValue} onClick={e => console.log(e.target)} onChange={event => setSubtaskValue(event.target.value)} />
           <Button style={{ height: "4vh" }} type="primary" onClick={(e) => {
             e.stopPropagation();
             handleAddSubtask(task.id);
           }}>Create</Button>
         </Space.Compact>
+
+        <Dropdown menu={{ items, onClick }} trigger={['click']}>
+          <a onClick={(e) => {
+            e.stopPropagation();
+          }}>
+            <Space>
+              Select Property
+              <DownOutlined />
+            </Space>
+          </a>
+        </Dropdown>
       </Modal>
 
       <Modal

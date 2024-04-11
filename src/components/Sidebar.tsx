@@ -9,6 +9,7 @@ export default function Sidebar(): JSX.Element {
     dispatch(createBoard({
       title: "Personal",
       subtitle: "This is a personal board",
+      labels: [],
     }));
   }
   

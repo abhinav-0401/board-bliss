@@ -1,5 +1,11 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+export interface Label {
+  value: string;
+  color: string;
+  id: number;
+}
+
 export interface Subtask {
   id: number;
   value: string;
@@ -11,6 +17,7 @@ export interface Task {
   title: string;
   description?: string;
   subtasks?: Subtask[];
+  labels: Label[];
 }
 
 export interface Category {
@@ -25,6 +32,7 @@ export interface Board {
   title: string;
   subtitle?: string;
   categories?: Category[];
+  labels: Label[];
 }
 
 const initialState: Board = {
@@ -38,6 +46,7 @@ const initialState: Board = {
       tasks: [],
     } as Category,
   ],
+  labels: [],
 };
 
 export const boardSlice = createSlice({
@@ -110,6 +119,16 @@ export const boardSlice = createSlice({
           task.subtasks[i].id = i; 
         }
       }
+    },
+    addLabel: (state, action: PayloadAction<Label>) => {
+      console.log(action.payload);
+      state.labels.push(action.payload);
+    },
+    addLabelToTask: (state, action) => {
+      console.log("addLabelToTask: ", action.payload);
+      const category = state.categories && state.categories[action.payload.categoryId];
+      const task = category?.tasks && category.tasks[action.payload.taskId];
+      task?.labels.push(action.payload.label);
     }
   },
 });
@@ -124,6 +143,8 @@ export const {
   editTask,
   deleteTask,
   deleteSubtask,
+  addLabel,
+  addLabelToTask,
 } = boardSlice.actions;
 
 export default boardSlice.reducer;

@@ -24,6 +24,7 @@ export default function KanbanCategory(props: any): JSX.Element {
         title: taskTitle, 
         id: board.categories ? board.categories[categoryId].tasks?.length : 0,
         subtasks: [],
+        labels: [],
       } as Task,
     }));
     console.log("board vategories", board.categories ? board.categories[categoryId].tasks : null);

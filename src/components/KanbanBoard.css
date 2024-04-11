@@ -59,6 +59,12 @@
     height: 100%;
 }
 
+.new-label-container {
+    margin: 0.75rem;
+    margin-top: 3rem;
+    height: 100%;
+}
+
 .ant-card-body {
     padding: 1rem !important;
 }

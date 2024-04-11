@@ -1,5 +1,5 @@
 import { Button, ColorPicker, Input, Space } from "antd";
-import { Board, createCategory } from "../store/BoardSlice";
+import { Board, addLabel, createCategory } from "../store/BoardSlice";
 import { useState } from "react";
 import { useAppDispatch } from "../hooks/TypedStore";
 import "./KanbanBoard.css";
@@ -11,12 +11,19 @@ export default function KanbanBoard(props: any): JSX.Element {
   const [categoryTitle, setCategoryTitle] = useState<string>("");
   const [categoryColor, setCategoryColor] = useState<string>("#F0E7F6");
 
+  const [labelTitle, setLabelTitle] = useState<string>("");
+  const [labelColor, setLabelColor] = useState<string>("#FFDCE0");
+
   const dispatch = useAppDispatch();
 
-  function handleCreateCategory() {
+  function handleCreateCategory(): void {
     console.log({ title: categoryTitle, id: board.categories ? board.categories.length : 0 });
     dispatch(createCategory({ tasks: [], title: categoryTitle, color: categoryColor, id: board.categories ? board.categories.length : 0 }));
     setCategoryTitle("");
+  }
+
+  function handleCreateLabel(): void {
+    dispatch(addLabel({ value: labelTitle, color: labelColor, id: board.labels.length }));
   }
 
 
@@ -38,6 +45,16 @@ export default function KanbanBoard(props: any): JSX.Element {
           </Space.Compact>
           <div style={{ display: "flex"}}>
             <ColorPicker defaultValue={"#F0E7F6"} showText value={categoryColor} onChangeComplete={value => setCategoryColor(value.toHexString())} />
+          </div>
+        </div>
+
+        <div className="new-label-container">
+          <Space.Compact className="new-label-input" style={{ height: "4%" }}>
+            <Input placeholder="Create a new label" value={labelTitle} onChange={event => setLabelTitle(event.target.value)} />
+            <Button style={{ height: "4%" }} type="primary" onClick={handleCreateLabel}>Create</Button>
+          </Space.Compact>
+          <div style={{ display: "flex" }}>
+            <ColorPicker defaultValue={"#F0E7F6"} showText value={labelColor} onChangeComplete={value => setLabelColor(value.toHexString())} />
           </div>
         </div>
       </div>
