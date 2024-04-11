@@ -3,13 +3,16 @@ import { Board, addTaskToCategory, createCategory } from "../store/BoardSlice";
 import { useState } from "react";
 import { useAppDispatch } from "../hooks/TypedStore";
 import "./KanbanBoard.css";
+import Task from "./KanbanTask";
+import KanbanTask from "./KanbanTask";
+import KanbanCategory from "./KanbanCategory";
 
 export default function KanbanBoard(props: any): JSX.Element {
   const board: Board = props.board;
 
   const [categoryTitle, setCategoryTitle] = useState<string>("");
   const [categoryColor, setCategoryColor] = useState<string>("#F0E7F6");
-  const [taskTitle, setTaskTitle] = useState<string>("");
+  
   const dispatch = useAppDispatch();
 
   function handleCreateCategory() {
@@ -18,12 +21,6 @@ export default function KanbanBoard(props: any): JSX.Element {
     setCategoryTitle("");
   }
 
-  function handleAddTask(categoryId: number) {
-    console.log(categoryId);
-    dispatch(addTaskToCategory({ categoryId: categoryId, task: { task: taskTitle, id: board.categories ? board.categories[categoryId].tasks?.length : 0 } }));
-    console.log("board vategories", board.categories ? board.categories[categoryId].tasks : null);
-    setTaskTitle("");
-  }
 
   return (
     <div className="board">
@@ -33,18 +30,7 @@ export default function KanbanBoard(props: any): JSX.Element {
       <div className="board-container">
         {board.categories?.map((category) => {
           return (
-            <div className="category-container" key={category.id}>
-              <h4 style={{ backgroundColor: category.color }}>{category.title}</h4>
-              <Card style={{ padding: "0rem" }} className="card">
-                {category.tasks?.map((task) => {
-                  return <Checkbox indeterminate key={task.id}>{task.task}</Checkbox>;
-                })}
-                <Space.Compact style={{ height: "4vh" }}>
-                  <Input placeholder="Add new task" value={taskTitle} onChange={event => setTaskTitle(event.target.value)} />
-                  <Button style={{ height: "4vh" }} type="primary" onClick={() => handleAddTask(category.id)}>Create</Button>
-                </Space.Compact>        
-              </Card>
-            </div>
+            <KanbanCategory board={board} category={category} />
           );
         })}
         <div className="new-category-container">

@@ -8,7 +8,7 @@ export interface Subtask {
 
 export interface Task {
   id: number;
-  task: string;
+  title: string;
   description?: string;
   subtasks?: Subtask[];
 }
@@ -59,10 +59,15 @@ export const boardSlice = createSlice({
       console.log(action.payload);
       console.log("tasks: ", state.categories && state.categories[action.payload.categoryId].tasks);
       state.categories && state.categories[action.payload.categoryId].tasks?.push(action.payload.task);
+    },
+    addSubtaskToTask: (state, action) => {
+      console.log(action.payload);
+      const category = state.categories && state.categories[action.payload.categoryId];
+      category?.tasks && category.tasks[action.payload.taskId].subtasks?.push(action.payload.subtask);
     }
   },
 });
 
-export const { createBoard, createCategory, addTaskToCategory } = boardSlice.actions;
+export const { createBoard, createCategory, addTaskToCategory, addSubtaskToTask } = boardSlice.actions;
 
 export default boardSlice.reducer;
