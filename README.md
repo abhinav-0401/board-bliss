@@ -2,6 +2,8 @@
 
 Board Bliss is a simple Kanban board app built with React, TypeScript and Redux.
 
+## [Deployment Link](https://board-bliss.vercel.app/)
+
 ### Board bliss supports:
 
 ### 1. Authentication:
