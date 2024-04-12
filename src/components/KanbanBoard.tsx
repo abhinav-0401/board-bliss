@@ -20,7 +20,6 @@ export default function KanbanBoard(props: any): JSX.Element {
 
   function handleModalClose(e: React.MouseEvent, setModalOpen: React.Dispatch<React.SetStateAction<boolean>>): void {
     e.stopPropagation();
-    console.log("handleEditClose called");
     setModalOpen(false);
   }
 

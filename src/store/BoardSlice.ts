@@ -67,20 +67,16 @@ export const boardSlice = createSlice({
       state.subtitle = action.payload.subtitle;
     },
     createCategory: (state, action) => {
-      console.log(action.payload);
       state.categories?.push(action.payload);
       // state.boards[action.payload.boardId].categories?.push(action.payload);
-      console.log(state.categories);
     },
     editCategory: (state, action) => {
-      console.log(action.payload);
       const category = state.categories && state.categories[action.payload.categoryId];
       if (category) { 
         category.title = action.payload.categoryTitle;
       }
     },
     deleteCategory: (state, action) => {
-      console.log(action.payload);
       state.categories?.splice(action.payload.categoryId, 1);
       if (state.categories) {
         for (let i = 0; i < state.categories.length; ++i) {
@@ -89,24 +85,19 @@ export const boardSlice = createSlice({
       }
     },
     addTaskToCategory: (state, action) => {
-      console.log(action.payload);
-      console.log("tasks: ", state.categories && state.categories[action.payload.categoryId].tasks);
       state.categories && state.categories[action.payload.categoryId].tasks?.push(action.payload.task);
     },
     addSubtaskToTask: (state, action) => {
-      console.log(action.payload);
       const category = state.categories && state.categories[action.payload.categoryId];
       category?.tasks && category.tasks[action.payload.taskId].subtasks?.push(action.payload.subtask);
     },
     editTask: (state, action) => {
-      console.log("inside editTask: ", action.payload);
       const category = state.categories && state.categories[action.payload.categoryId];
       if (category?.tasks && category.tasks[action.payload.taskId]) {
         category.tasks[action.payload.taskId] = action.payload.editedTask;
       }
     },
     deleteTask: (state, action) => {
-      console.log(action.payload);
       const category = state.categories && state.categories[action.payload.categoryId];
       category?.tasks?.splice(action.payload.taskId, 1);
       if (category?.tasks) {
@@ -117,7 +108,6 @@ export const boardSlice = createSlice({
       }
     },
     deleteSubtask: (state, action) => {
-      console.log(action.payload);
       const category = state.categories && state.categories[action.payload.categoryId];
       const task = category?.tasks && category.tasks[action.payload.taskId];
       task?.subtasks?.splice(action.payload.subtaskId, 1);
@@ -137,17 +127,14 @@ export const boardSlice = createSlice({
       }
     },
     addLabel: (state, action: PayloadAction<Label>) => {
-      console.log(action.payload);
       state.labels.push(action.payload);
     },
     addLabelToTask: (state, action) => {
-      console.log("addLabelToTask: ", action.payload);
       const category = state.categories && state.categories[action.payload.categoryId];
       const task = category?.tasks && category.tasks[action.payload.taskId];
       task?.labels.push(action.payload.label);
     },
     filterTask: (state, action) => {
-      console.log(action.payload);
       state.taskFilter = action.payload.taskFilter;
     },
     searchTask: (state, action) => {

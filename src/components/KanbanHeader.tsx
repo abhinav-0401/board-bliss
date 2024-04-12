@@ -47,7 +47,7 @@ export default function KanbanHeader(): JSX.Element {
 
             <h4>Filter Tasks by Label:</h4>
             <Space.Compact style={{ height: "4vh" }}>
-              <Input allowClear placeholder="Filter tasks by label" onClick={e => console.log(e.target)} value={taskFilter} onChange={event => setTaskFilter(event.target.value)} />
+              <Input allowClear placeholder="Filter tasks by label" value={taskFilter} onChange={event => setTaskFilter(event.target.value)} />
               <Button style={{ height: "4vh" }} type="default" onClick={(e) => {
                 e.stopPropagation();
                 dispatch(filterTask({ taskFilter, }));
@@ -56,7 +56,7 @@ export default function KanbanHeader(): JSX.Element {
             
             <h4>Search for Tasks:</h4>
             <Space.Compact style={{ height: "4vh" }}>
-              <Input allowClear placeholder="Search for tasks by name" onClick={e => console.log(e.target)} value={taskSearch} onChange={event => setTaskSearch(event.target.value)} />
+              <Input allowClear placeholder="Search for tasks by name" value={taskSearch} onChange={event => setTaskSearch(event.target.value)} />
               <Button style={{ height: "4vh" }} type="default" onClick={(e) => {
                 e.stopPropagation();
                 dispatch(searchTask({ taskSearch, }));

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/TypedStore";
-import { Board, Category, Task, addTaskToCategory, deleteCategory, editCategory, filterTask } from "../store/BoardSlice";
+import { Board, Category, Task, addTaskToCategory, deleteCategory, editCategory, } from "../store/BoardSlice";
 import KanbanTask from "./KanbanTask";
 import { Button, Input, Modal, Space } from "antd";
 import { CloseOutlined } from "@ant-design/icons";

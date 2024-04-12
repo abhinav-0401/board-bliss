@@ -32,7 +32,6 @@ export default function KanbanTask(props: any): JSX.Element {
 
   function handleModalClose(e: React.MouseEvent, setModalOpen: React.Dispatch<React.SetStateAction<boolean>>): void {
     e.stopPropagation();
-    console.log("handleEditClose called");
     setModalOpen(false);
   }
 
@@ -114,7 +113,6 @@ export default function KanbanTask(props: any): JSX.Element {
   }
 
   const onClick: MenuProps['onClick'] = ({ key }) => {
-    console.log(`Click on item ${key}`);
     
     if (task.labels.length >= 1) {
       for (let label of task.labels) {
@@ -176,7 +174,7 @@ export default function KanbanTask(props: any): JSX.Element {
           <div className="task-modal-subtask-container">
             <h4>Add a new subtask:</h4>
             <Space.Compact style={{ height: "4vh" }}>
-              <Input allowClear placeholder="Add new subtask" value={subtaskValue} onClick={e => console.log(e.target)} onChange={event => setSubtaskValue(event.target.value)} />
+              <Input allowClear placeholder="Add new subtask" value={subtaskValue} onChange={event => setSubtaskValue(event.target.value)} />
               <Button style={{ height: "4vh" }} type="default" onClick={(e) => {
                 e.stopPropagation();
                 handleAddSubtask(task.id);
@@ -221,7 +219,6 @@ export default function KanbanTask(props: any): JSX.Element {
         <div className="edit-modal-body">
           <h4>Edit Subtasks</h4>
           {editedTask.subtasks?.map(subtask => {
-            console.log("subtask", subtask);
             return (
               <KanbanSubtask key={subtask.id} subtask={subtask} task={task} category={category} editedTask={editedTask} setEditedTask={setEditedTask} />
             );
