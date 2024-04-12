@@ -28,7 +28,7 @@ export default function Signup(): JSX.Element {
   }
 
   function validatePassword(password: string): boolean {
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[!@_\-?]).{8,}$/;
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_@!])(?=.*[a-zA-Z0-9]).{8,}$/;
     return passwordRegex.test(password);
   }
 
@@ -41,7 +41,7 @@ export default function Signup(): JSX.Element {
 
   function handleSignup(): void {
 
-    if (!validateEmail(password)) { 
+    if (!validateEmail(email)) { 
       setEmailStatus("error");
     } else if (emailStatus === "error") { setEmailStatus(""); }
 
