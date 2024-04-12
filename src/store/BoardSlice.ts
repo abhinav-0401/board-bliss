@@ -33,6 +33,12 @@ export interface Board {
   subtitle?: string;
   categories?: Category[];
   labels: Label[];
+  taskFilter?: string;
+  taskSearch?: string;
+}
+
+export interface Kanban {
+  boards: Board[];
 }
 
 const initialState: Board = {
@@ -50,18 +56,20 @@ const initialState: Board = {
 };
 
 export const boardSlice = createSlice({
-  name: "board",
+  name: "boards",
   initialState,
   reducers: {
     createBoard: (state, action: PayloadAction<Board>) => {
-      state.title = action.payload.title;
-      if (action.payload.subtitle) {
-        state.subtitle = action.payload.subtitle;
-      }
+      // state.boards.push(action.payload);
     },
-    createCategory: (state, action: PayloadAction<Category>) => {
+    editBoard: (state, action) => {
+      state.title = action.payload.title;
+      state.subtitle = action.payload.subtitle;
+    },
+    createCategory: (state, action) => {
       console.log(action.payload);
       state.categories?.push(action.payload);
+      // state.boards[action.payload.boardId].categories?.push(action.payload);
       console.log(state.categories);
     },
     editCategory: (state, action) => {
@@ -120,6 +128,14 @@ export const boardSlice = createSlice({
         }
       }
     },
+    toggleSubtaskDone: (state, action) => {
+      const category = state.categories && state.categories[action.payload.categoryId];
+      const task = category?.tasks && category.tasks[action.payload.taskId];
+      const subtask = task?.subtasks && task.subtasks[action.payload.subtaskId];
+      if (subtask) {
+        subtask.isDone = action.payload.isDone;
+      }
+    },
     addLabel: (state, action: PayloadAction<Label>) => {
       console.log(action.payload);
       state.labels.push(action.payload);
@@ -129,12 +145,20 @@ export const boardSlice = createSlice({
       const category = state.categories && state.categories[action.payload.categoryId];
       const task = category?.tasks && category.tasks[action.payload.taskId];
       task?.labels.push(action.payload.label);
-    }
+    },
+    filterTask: (state, action) => {
+      console.log(action.payload);
+      state.taskFilter = action.payload.taskFilter;
+    },
+    searchTask: (state, action) => {
+      state.taskSearch = action.payload.taskSearch;
+    },
   },
 });
 
 export const {
   createBoard,
+  editBoard,
   createCategory,
   editCategory,
   deleteCategory,
@@ -143,8 +167,11 @@ export const {
   editTask,
   deleteTask,
   deleteSubtask,
+  toggleSubtaskDone,
   addLabel,
   addLabelToTask,
+  filterTask,
+  searchTask,
 } = boardSlice.actions;
 
 export default boardSlice.reducer;

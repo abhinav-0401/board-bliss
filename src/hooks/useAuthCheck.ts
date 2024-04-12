@@ -8,7 +8,7 @@ export default function useAuthCheck(): void {
   const user: User = useAppSelector(state => state.user);
 
   useEffect(() => {
-    if (!user.username || !user.password) {
+    if (!user.username || !user.password || !user.email) {
       navigate("/signup");
     } else {
       navigate("/home");

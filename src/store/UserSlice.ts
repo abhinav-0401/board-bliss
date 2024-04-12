@@ -2,11 +2,13 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface User {
   username: string | null;
+  email: string | null;
   password: string | null;
 }
 
 const initialState: User = {
   username: null,
+  email: null,
   password: null,
 };
 
@@ -15,12 +17,11 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     signup: (state, action: PayloadAction<User>) => {
-      console.log("payload: ", action.payload);
       state.username = action.payload.username;
       state.password = action.payload.password;
+      state.email = action.payload.email;
     },
     logout: state => {
-      console.log("user being logged out...");
       state.username = null;
       state.password = null;
     },

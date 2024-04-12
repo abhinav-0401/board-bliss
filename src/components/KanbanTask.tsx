@@ -1,10 +1,11 @@
 import { Button, Card, Checkbox, Dropdown, Input, Menu, MenuProps, Modal, Space } from "antd";
-import { Board, Category, Subtask, Task, addLabelToTask, addSubtaskToTask, deleteTask, editTask } from "../store/BoardSlice";
-import { useEffect, useState } from "react";
+import { Board, Category, Subtask, Task, addLabelToTask, addSubtaskToTask, deleteTask, editTask, toggleSubtaskDone } from "../store/BoardSlice";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch } from "../hooks/TypedStore";
 import { MenuInfo } from "rc-menu/lib/interface";
 import KanbanSubtask from "./KanbanSubtask";
 import { DownOutlined } from "@ant-design/icons";
+import KanbanLabel from "./KanbanLabel";
 
 export default function KanbanTask(props: any): JSX.Element {
   const task: Task = props.task;
@@ -13,14 +14,13 @@ export default function KanbanTask(props: any): JSX.Element {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
-  
+
   const [subtaskValue, setSubtaskValue] = useState<string>("");
 
   const [editedTask, setEditedTask] = useState<Task>(props.task);
 
   useEffect(() => {
     setEditedTask(props.task);
-    console.log("editedTask", editedTask);
   }, [props.task]);
 
   const dispatch = useAppDispatch();
@@ -94,6 +94,16 @@ export default function KanbanTask(props: any): JSX.Element {
     }));
   }
 
+  function handleSubtaskDone(e: React.MouseEvent, subtaskId: number, isDone: boolean) {
+    e.stopPropagation();
+    dispatch(toggleSubtaskDone({
+      isDone,
+      categoryId: category.id,
+      taskId: task.id,
+      subtaskId,
+    }));
+  }
+
   const items: MenuProps['items'] = [];
 
   for (const label of board.labels) {
@@ -126,15 +136,19 @@ export default function KanbanTask(props: any): JSX.Element {
       <h3>{task.title}</h3>
       <div style={{ display: "flex", flexDirection: "column" }}>
         {task.subtasks?.map((subtask) => {
+
           return (
-            <Checkbox key={subtask.id} indeterminate>{subtask.value}</Checkbox>
+            <div className="check-container" onClick={e => handleSubtaskDone(e, subtask.id, !subtask.isDone)}>
+              <input type="checkbox" id={subtask.value} checked={subtask.isDone} className="check" key={subtask.id} />
+              <label htmlFor={subtask.value}>{subtask.value}</label>
+            </div>
           );
         })}
 
-        <div>
+        <div className="label-list-container">
           {task.labels.map(label => {
             return (
-              <div key={label.id}>{label.value}</div>
+              <KanbanLabel label={label} />
             );
           })}
         </div>
@@ -152,28 +166,37 @@ export default function KanbanTask(props: any): JSX.Element {
         onOk={e => handleModalClose(e, setIsModalOpen)}
         onCancel={e => handleModalClose(e, setIsModalOpen)} 
       >
-        <header>
-          <div>{task.title}</div>
+        <header className="task-modal-header">
+          <h3>{task.title}</h3>
           <Menu mode="vertical" items={editMenuItems} />
         </header>
-        <Space.Compact style={{ height: "4vh" }}>
-          <Input placeholder="Add new subtask" value={subtaskValue} onClick={e => console.log(e.target)} onChange={event => setSubtaskValue(event.target.value)} />
-          <Button style={{ height: "4vh" }} type="primary" onClick={(e) => {
-            e.stopPropagation();
-            handleAddSubtask(task.id);
-          }}>Create</Button>
-        </Space.Compact>
 
-        <Dropdown menu={{ items, onClick }} trigger={['click']}>
-          <a onClick={(e) => {
-            e.stopPropagation();
-          }}>
-            <Space>
-              Select Property
-              <DownOutlined />
-            </Space>
-          </a>
-        </Dropdown>
+        <div className="task-modal-body">
+
+          <div className="task-modal-subtask-container">
+            <h4>Add a new subtask:</h4>
+            <Space.Compact style={{ height: "4vh" }}>
+              <Input allowClear placeholder="Add new subtask" value={subtaskValue} onClick={e => console.log(e.target)} onChange={event => setSubtaskValue(event.target.value)} />
+              <Button style={{ height: "4vh" }} type="default" onClick={(e) => {
+                e.stopPropagation();
+                handleAddSubtask(task.id);
+              }}>Create</Button>
+            </Space.Compact>
+          </div>
+          
+
+          <Dropdown menu={{ items, onClick }} trigger={['click']}>
+            <a onClick={(e) => {
+              e.stopPropagation();
+            }}>
+              <Space>
+                Add Label to Task
+                <DownOutlined />
+              </Space>
+            </a>
+          </Dropdown>
+        </div>
+
       </Modal>
 
       <Modal
@@ -187,18 +210,24 @@ export default function KanbanTask(props: any): JSX.Element {
         onOk={e => handleTaskEdit(e)} 
         onCancel={e => handleModalClose(e, setIsEditModalOpen)}
       >
-        <div>Edit Task Title:</div>
-        <Input value={editedTask.title} onChange={event => setEditedTask({
-          ...editedTask,
-          title: event.target.value,
-        })} />
-  
-        {editedTask.subtasks?.map(subtask => {
-          console.log("subtask", subtask);
-          return (
-            <KanbanSubtask key={subtask.id} subtask={subtask} task={task} category={category} editedTask={editedTask} setEditedTask={setEditedTask} />
-          );
-        })}
+        <header>
+          <h3>Edit Task Title:</h3>
+          <Input allowClear style={{ height: "4vh"}} value={editedTask.title} onChange={event => setEditedTask({
+            ...editedTask,
+            title: event.target.value,
+          })} />
+        </header>
+        
+        <div className="edit-modal-body">
+          <h4>Edit Subtasks</h4>
+          {editedTask.subtasks?.map(subtask => {
+            console.log("subtask", subtask);
+            return (
+              <KanbanSubtask key={subtask.id} subtask={subtask} task={task} category={category} editedTask={editedTask} setEditedTask={setEditedTask} />
+            );
+          })}
+        </div>
+        
       </Modal>  
 
     </Card>

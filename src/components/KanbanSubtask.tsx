@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { Button, Input } from "antd";
 import { Category, Subtask, Task, deleteSubtask } from "../store/BoardSlice";
 import { CloseOutlined } from "@ant-design/icons";
 import { useAppDispatch } from "../hooks/TypedStore";
@@ -43,8 +43,8 @@ export default function KanbanSubtask(props: any): JSX.Element {
 
   return (
     <div className="edit-subtask" key={subtask.id}>
-      <Input value={editSubtask} onChange={e => handleEditSubtask(e, subtask.id)} />
-      <CloseOutlined onClick={() => handleDeleteSubtask(subtask.id)} />
+      <Input value={editSubtask} style={{ height: "4vh" }} onChange={e => handleEditSubtask(e, subtask.id)} />
+      <Button onClick={() => handleDeleteSubtask(subtask.id)} type="text" ><CloseOutlined /></Button>
     </div>
   );
 }

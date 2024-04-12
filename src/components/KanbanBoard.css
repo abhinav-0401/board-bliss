@@ -12,7 +12,7 @@
 }
 
 .board h3 {
-    font-size: 1.4rem;
+    font-size: 0.875rem;
     font-weight: 400;
     letter-spacing: 0.1px;
     color: #5A5A65;
@@ -69,10 +69,33 @@
     padding: 1rem !important;
 }
 
+@media screen and (min-width: 450px) {
+    .card {
+        min-width: 284px;
+        max-width: 284px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .card {
+        width: 100%;
+    }
+}
+
 .card {
-    min-width: 284px;
-    max-width: 284px;
+    /* min-width: 284px;
+    max-width: 284px; */
     border-radius: 8px;
+    border: 1px;
+    box-shadow: 0px 2px 4px 0px #00000014;
+}
+
+.card:hover {
+    box-shadow: 0px 2px 4px 4px #00000014;
+}
+
+.card h3:hover {
+    color: #4096FF;
 }
 
 .card h3 {
@@ -98,6 +121,29 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+.label-container {
+    width: fit-content;
+    border-radius: 0.5rem;
+    display: flex;
+    gap: 0.625rem;
+    padding: 0.25rem 0.625rem 0.25rem 0.625rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    letter-spacing: -0.4px;    
+}
+
+.task-modal h3 {
+    margin: 0px;
+    font-size: 1rem;
+    color: #212121;
+    font-weight: 600;
+}
+
+.task-modal-body div {
+    display: flex;
+    gap: 10px;
 }
 
 /* 

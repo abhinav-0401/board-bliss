@@ -1,27 +1,23 @@
 import { Outlet } from 'react-router-dom';
 import { Layout } from 'antd';
-import Sidebar from './components/Sidebar';
 import useAuthCheck from './hooks/useAuthCheck';
+import KanbanHeader from './components/KanbanHeader';
+import "./App.css";
 
-const { Header, Content, Sider } = Layout;
+const { Header, Content } = Layout;
 
 function App(): JSX.Element {
-
-  console.log("rendered");
   useAuthCheck();
 
   return (
     <>
-      <Layout style={{ height: "100%", background: "#ffffff" }}>
-        <Header style={{ height: "8%", background: "#ffffff" }}></Header>
-        <Layout>
-          <Sider width="15%" style={{ background: "#ffffff" }}>
-            <Sidebar />
-          </Sider>
-          <Content>
-            <Outlet />
-          </Content>
-        </Layout>
+      <Layout style={{ height: "100vh", background: "#ffffff" }}>
+        <Header style={{ height: "8vh", background: "#ffffff", padding: 0 }}>
+          <KanbanHeader />
+        </Header>
+        <Content>
+          <Outlet />
+        </Content>
       </Layout>
     </>
   )

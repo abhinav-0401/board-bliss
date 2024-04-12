@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useAppDispatch } from "../hooks/TypedStore";
-import { Board, Category, Task, addTaskToCategory, deleteCategory, editCategory } from "../store/BoardSlice";
+import { useAppDispatch, useAppSelector } from "../hooks/TypedStore";
+import { Board, Category, Task, addTaskToCategory, deleteCategory, editCategory, filterTask } from "../store/BoardSlice";
 import KanbanTask from "./KanbanTask";
 import { Button, Input, Modal, Space } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
@@ -11,13 +11,28 @@ export default function KanbanCategory(props: any): JSX.Element {
   const category: Category = props.category;
 
   const dispatch = useAppDispatch();
+  const taskFilter = useAppSelector(state => state.board.taskFilter);
+  const taskSearch = useAppSelector(state => state.board.taskSearch);
+
+  const filteredTasks = category?.tasks?.filter(task => {
+    if (!taskFilter) { return true; }
+    for (const label of task.labels) {
+      if (label.value === taskFilter) { return true; }
+    }
+    return false;
+  });
+
+  const searchedTasks = filteredTasks?.filter(task => {
+    if (!taskSearch) { return true; }
+    if (task.title === taskSearch) { return true; }
+    return false;
+  })
 
   const [isCategoryEditModalOpen, setIsCategoryEditModalOpen] = useState<boolean>(false);
 
-  const [categoryTitle, setCategoryTitle] = useState<string>("");
+  const [categoryTitle, setCategoryTitle] = useState<string>(category.title);
 
   function handleAddTask(categoryId: number) {
-    console.log(categoryId);
     dispatch(addTaskToCategory({
       categoryId: categoryId,
       task: {
@@ -27,13 +42,11 @@ export default function KanbanCategory(props: any): JSX.Element {
         labels: [],
       } as Task,
     }));
-    console.log("board vategories", board.categories ? board.categories[categoryId].tasks : null);
     setTaskTitle("");
   }
 
   function handleModalClose(e: React.MouseEvent, setModalOpen: React.Dispatch<React.SetStateAction<boolean>>): void {
     e.stopPropagation();
-    console.log("handleEditClose called");
     setModalOpen(false);
   }
 
@@ -63,7 +76,7 @@ export default function KanbanCategory(props: any): JSX.Element {
   return (
     <div className="category-container" key={category.id} onClick={showCategoryEdit}>
       <h4 style={{ backgroundColor: category.color }}>{category.title}</h4>
-      {category.tasks?.map((task) => {
+      {searchedTasks?.map((task) => {
         return (
           <KanbanTask key={task.id} board={board} category={category} task={task} />
         );
@@ -73,7 +86,7 @@ export default function KanbanCategory(props: any): JSX.Element {
         <Input placeholder="Add new task" value={taskTitle} onChange={event => setTaskTitle(event.target.value)}
           onClick={e => e.stopPropagation()}
         />
-        <Button style={{ height: "4vh" }} type="primary" onClick={(e) => {
+        <Button style={{ height: "4vh" }} type="default" onClick={(e) => {
           e.stopPropagation();
           handleAddTask(category.id);
         }}>Create</Button>
@@ -91,10 +104,13 @@ export default function KanbanCategory(props: any): JSX.Element {
         onOk={handleCategoryEdit}
         onCancel={e => handleModalClose(e, setIsCategoryEditModalOpen)}
       >
-        <Space.Compact style={{ height: "4vh" }}>
-          <Input placeholder="Edit Category Name" value={categoryTitle} onChange={event => setCategoryTitle(event.target.value)} />
-          <CloseOutlined onClick={handleCategoryDelete} />
-        </Space.Compact>
+        <div className="task-modal-body">
+          <h3>{category.title}</h3>
+          <div style={{ height: "4vh" }}>
+            <Input placeholder="Edit Category Name" value={categoryTitle} onChange={event => setCategoryTitle(event.target.value)} />
+            <CloseOutlined onClick={handleCategoryDelete} />
+          </div>
+        </div>
       </Modal>
     </div>
   );
