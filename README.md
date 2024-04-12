@@ -75,6 +75,6 @@ src/
 - `/assets` -> For ***assets*** like images
 - `/components` -> For components displayed as part of pages, like Task, Subtask, Category, etc.
 - `/hooks` -> For custom hooks.
-- `/pages` -> Each `.tsx` file within this folder represents a route in theapp
+- `/pages` -> Each `.tsx` file within this folder represents a route in the app
 - `/providers` -> For App providers like Route providers and Store Providers. Currently holds a single `<AppProvider />` component encompassing all providers being used.
 - `/store` -> For Redux store slices, which include their reducers, and the `Store.ts` file where all the slices are merged.
