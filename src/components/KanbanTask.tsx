@@ -1,6 +1,6 @@
-import { Button, Card, Checkbox, Dropdown, Input, Menu, MenuProps, Modal, Space } from "antd";
+import { Button, Card, Dropdown, Input, Menu, MenuProps, Modal, Space } from "antd";
 import { Board, Category, Subtask, Task, addLabelToTask, addSubtaskToTask, deleteTask, editTask, toggleSubtaskDone } from "../store/BoardSlice";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "../hooks/TypedStore";
 import { MenuInfo } from "rc-menu/lib/interface";
 import KanbanSubtask from "./KanbanSubtask";

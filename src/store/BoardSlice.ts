@@ -59,9 +59,9 @@ export const boardSlice = createSlice({
   name: "boards",
   initialState,
   reducers: {
-    createBoard: (state, action: PayloadAction<Board>) => {
-      // state.boards.push(action.payload);
-    },
+    // createBoard: (state, action: PayloadAction<Board>) => {
+    //   // state.boards.push(action.payload);
+    // },
     editBoard: (state, action) => {
       state.title = action.payload.title;
       state.subtitle = action.payload.subtitle;
@@ -144,7 +144,7 @@ export const boardSlice = createSlice({
 });
 
 export const {
-  createBoard,
+  // createBoard,
   editBoard,
   createCategory,
   editCategory,
