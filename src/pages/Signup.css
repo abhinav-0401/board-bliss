@@ -17,6 +17,13 @@
     box-shadow: 0px 2px 4px 6px #00000014;
 }
 
+@media screen and (max-width: 680px) {
+    .signup-card {
+        width: 80vw;
+        padding: 0.5rem;
+    }
+}
+
 .signup-header {
     display: flex;
     flex-direction: column;
@@ -48,4 +55,16 @@
     gap: 1rem;
 
     align-items: center;
+}
+
+.signup-btn {
+    height: 4vh;
+    width: 12vw;
+}
+
+@media screen and (max-width: 680px) {
+    .signup-btn {
+        height: 4vh;
+        width: fit-content;
+    }
 }

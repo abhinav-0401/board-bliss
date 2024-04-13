@@ -77,7 +77,7 @@ export default function Signup(): JSX.Element {
           <Input status={passwordStatus} placeholder="Create a password" value={password} onChange={event => setPassword(event.target.value)} />
           {passwordStatus === "error" ? <div>Incorrect password format. Must be atleast 8 characters long and have atleast one uppercase letter, one lowercase letter, one special character and one digit.</div> : null}
 
-          <Button style={{ height: "4vh", width: "12vw" }} type="default" onClick={handleSignup}>Signup</Button>
+          <Button className="signup-btn" type="default" onClick={handleSignup}>Signup</Button>
         </div>
       </Card>
     </div>
